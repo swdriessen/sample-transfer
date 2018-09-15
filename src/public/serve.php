@@ -22,8 +22,7 @@ if($download = $uploadService->getDownload($file))
 			$test = false;
 		}
 
-		$uploadService->setDownloadCount($download->id, ($download->downloads+1));
-
+		$uploadService->updateDownloadCount($download->id, ($download->downloads+1));
 		//check fileexists
 		//$download->filesize
 

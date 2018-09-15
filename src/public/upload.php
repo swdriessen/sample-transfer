@@ -90,7 +90,7 @@ if($authenticated && $isPost = isset($_POST['uploadSubmit']))
 
 		$filesize = filesize($file['tmp_name']);
 
-		if($uploadService->createUploadEntry($userId, $originalFilename, $uniqueFilename, $filesize, $description)) {
+		if($uploadService->insert($userId, $originalFilename, $uniqueFilename, $filesize, $description)) {
 			//move the file to the destination
 			$source = $file['tmp_name'];
 			$destination = $path;
