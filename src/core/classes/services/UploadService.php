@@ -15,7 +15,7 @@ class UploadService {
 		
 		while($row = mysqli_fetch_assoc($result)){
 
-			$upload = new FileUpload();
+			$upload = new Upload();
 
 			$upload->id = $row['id'];
 			$upload->userId = $row['user_id'];
@@ -49,7 +49,7 @@ class UploadService {
 		
 		while($row = mysqli_fetch_assoc($result)){
 
-			$upload = new FileUpload();
+			$upload = new Upload();
 
 			$upload->id = $row['id'];
 			$upload->userId = $row['user_id'];

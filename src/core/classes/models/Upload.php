@@ -1,6 +1,6 @@
 <?php
 
-class FileUpload
+class Upload
 {
 	public $id;
 	public $userId;
@@ -12,7 +12,7 @@ class FileUpload
 	public $expirationDate;
 	public $downloads;
 	
-	//todo: propert implementation
+	//todo: proper implementation
 
 	// public function __construct($userId, $filename, $description = ''){
 	// 	$this->userId = $userId;
@@ -21,7 +21,9 @@ class FileUpload
 	// 	$this->uploadDate = date('Y-m-d H:i:s', time());
 	// 	$this->expirationDate = date('Y-m-d H:i:s', time() + 60 * 60 * 24 * 14);		
 	// }
+	public function __construct(){
 
+	}
 
 
 	public function getDisplayFileSize(){
