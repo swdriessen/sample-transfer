@@ -15,7 +15,7 @@ CREATE TABLE `uploads` (
   `description` text NOT NULL,
   `upload_date` datetime NOT NULL DEFAULT current_timestamp(),
   `expiration_date` datetime NOT NULL,
-  `downloads` int(11) NOT NULL  
+  `downloads` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 CREATE TABLE `users` (
