@@ -1,0 +1,11 @@
+#todo: 404
+#simple rules to make a first working version
+RewriteEngine On
+
+RewriteRule ^upload/?$ upload.php
+RewriteRule ^logout/?$ logout.php
+RewriteRule ^auth/?$ authenticate.php
+RewriteRule ^auth/github/?$ authenticate.php
+RewriteRule ^callback/?$ callback.php
+RewriteRule ^downloads/(.*)$ downloads.php?file=$1
+RewriteRule ^serve/(.*)$ serve.php?file=$1

@@ -1,0 +1,14 @@
+{	
+	"project_name" : "BPI06 Transfer",
+	"github" : {
+		"client_id" : "",
+		"client_secret" : "",
+		"redirect_url" : ""
+	},	
+	"database" : {
+		"host" : "localhost",
+		"name" : "transfer",
+		"username" : "root",
+		"password" : ""
+	}
+}

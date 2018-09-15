@@ -1,0 +1,10 @@
+#npm packages
+node_modules
+
+#vscode
+.vscode
+
+#application files
+src/core/config/config.json
+src/core/logs
+src/public/uploads

@@ -1,0 +1,105 @@
+html {
+  height: 100%; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  color: #151516;
+  position: relative;
+  padding-bottom: 50px;
+  min-height: 100%; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Nunito', sans-serif; }
+
+/* navbar*/
+.navbar {
+  background-color: #1d1d20 !important; }
+  .navbar a.dropdown-item {
+    font-size: 0.9rem;
+    font-weight: 600; }
+
+.navbar-logo {
+  height: 30px; }
+
+.avatar {
+  width: 50px;
+  height: 50px; }
+
+.profile-avatar {
+  border-radius: 5%;
+  max-height: 150px;
+  max-width: 150px; }
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #1d1d20;
+  color: #e7e7e7;
+  font-size: 0.75rem;
+  text-align: center;
+  min-height: 50px;
+  padding: 1.25rem; }
+
+footer ul {
+  padding: 0;
+  margin: 0; }
+
+main section {
+  margin: 4rem 0; }
+
+.jumbotron-code {
+  background: url("../images/simple-codelines.svg") center center no-repeat, #37394c;
+  color: #e7e7e7;
+  background-size: cover;
+  text-align: center; }
+
+.jumbotron .avatar {
+  height: 125px;
+  width: 125px;
+  border-radius: 10%;
+  margin-bottom: 1rem; }
+
+.jumbotron-code-online {
+  background: url("../images/simple-codelines.svg") center center no-repeat, #397446;
+  background-size: cover; }
+
+.jumbotron-code-red {
+  background: url("../images/simple-codelines.svg") center center no-repeat, #783338;
+  background-size: cover; }
+
+.jumbotron-code-info {
+  background: url("../images/simple-codelines.svg") center center no-repeat, #2093a5;
+  background-size: cover; }
+
+.jumbotron-code-download {
+  background: url("../images/simple-codelines.svg") center center no-repeat, #144731;
+  background-size: cover; }
+
+.background-download {
+  background: url("/images/simple-codelines.svg") center center no-repeat, #00000099;
+  background-size: cover; }
+
+/* @media only screen and (max-width: 600px) {
+    .jumbotron{
+
+	}
+}	 */
+.table thead th {
+  border-top: 0px; }
+
+.tab-container {
+  background: #FAFBFC;
+  border-bottom: 1px solid #dee2e6;
+  margin-bottom: 40px; }
+  .tab-container .container .tab-header {
+    padding: 20px 0; }
+  .tab-container .nav-tabs {
+    font-size: 0.9rem;
+    border-bottom: 0px; }
+    .tab-container .nav-tabs .nav-link.active {
+      font-weight: 400; }
+    .tab-container .nav-tabs .nav-link:not(.active):hover {
+      border-color: transparent !important; }
+    .tab-container .nav-tabs .nav-link:not(.active):active {
+      border-color: transparent !important; }

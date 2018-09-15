@@ -1,0 +1,32 @@
+//bootstrap variables
+$enable-caret: false !default;
+$enable-rounded: false !default;
+
+$input-btn-focus-color: rgba(255,255,255,0) !default;
+
+$blue:    #176cae !default;
+$indigo:  #6610f2 !default;
+$purple:  #6f42c1 !default;
+$pink:    #e83e8c !default;
+$red:     #783338 !default;
+$orange:  #e0863c !default;
+$yellow:  #dba718 !default;
+$green:   #397446 !default;
+$teal:    #20c997 !default;
+$cyan:    #2093a5 !default;
+
+//page variables
+$theme: #2c2e3d;
+$theme-light: #E7E7E7;
+$theme-dark: #1d1d20;
+
+$github : #2B3137;
+$upload : #36664b;
+
+//theme based classes
+$theme-colors: (
+	"theme" : $theme,
+	"theme-light": $theme-light,
+	"theme-dark": $theme-dark,
+	"github" : $github,
+);
