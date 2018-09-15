@@ -49,22 +49,3 @@ function redirect($location = '/'){
 	header('Location: '.$location);
 	die();
 }
-function get_upload_error($id){
-	switch($id)
-	{
-		case UPLOAD_ERR_INI_SIZE:
-			return 'The file exceeds the upload limit.';
-		case UPLOAD_ERR_PARTIAL:
-			return 'The file was not uploaded fully, please try again.';
-		case UPLOAD_ERR_NO_FILE:
-			return 'Selecteer een bestand.';
-		default:
-			echo 'Unable to upload at the moment.';
-			break;
-	}
-}
-
-function generateUniqueFilename($extension, $prefix = ''){	
-	return uniqid($prefix).'.'.$extension;
-}
-

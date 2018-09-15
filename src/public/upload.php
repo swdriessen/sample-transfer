@@ -1,149 +1,102 @@
-<?php
+<?php require_once 'includes/core.php';
 
-require_once 'includes/core.php';
-
-$authenticated = isAuthenticated();
-
-if(!$authenticated){
+//todo: create authentication service that runs or is initialized in core
+if(!$authenticated = isAuthenticated()){
 	redirect('/');
 }
 
-$connection = create_connection();
-
-$userRepository = new UserRepository($connection);
+$userRepository = new UserRepository($database);
 $user = $userRepository->fetchUser($_SESSION[SESSION_USER_ID]);
 
-if($authenticated && $isPost = isset($_POST['uploadSubmit']))
+if(isset($_POST['uploadSubmit']))
 {
-	$uploadService = new UploadService($connection);
+	$uploadService = new UploadService($database);
+	$notifications = [];
+	$errors = [];
 	
-	$errors = array();
+	//get form details
+	$description = Utilities::post('descriptionInput', '');
+	$file = Utilities::files('uploadInput');
 
-	$description = $_POST['descriptionInput'] ?? '';
-	$file = $_FILES['uploadInput'] ?? null;
-	
-	if($file == null) { 
-		$errors[] = 'No file specified.'; 
+	//perform some validation on the file
+	if($file)
+	{
+		if($file['error'] > 0)
+		{
+			switch($file['error'])
+			{
+				case UPLOAD_ERR_INI_SIZE:
+					$errors[] = 'Your file exceeds the upload limit. The maximum filesize is '.UPLOAD_MAX_FILESIZE_IN_MB.' MB';
+				case UPLOAD_ERR_PARTIAL:
+					$errors[] = 'Your file was not uploaded completely, please try again.';
+				case UPLOAD_ERR_NO_FILE:
+					$errors[] = 'You have not specified a file to be uploaded.'; 
+				default:
+					$errors[] ='The service was unable to upload your file at this time.';
+					break;
+			}
+		}
+		else
+		{		
+			if(!$uploadService->validateExtension($file['name'])){
+				$errors[] = 'Invalid extension for avatar. Accepted extensions are: '.implode(', ', $acceptedExtensions);
+			}
+			
+			if(!$uploadService->validateUploadFilesize($file['size'])){
+				$errors[] = 'Your file exceeds the upload limit. The maximum filesize is '.UPLOAD_MAX_FILESIZE_IN_MB.' MB';
+			}
+
+			//todo: check for filetype which should be application/x-zip-compressed
+		}
+	}
+	else
+	{
+		//even without fileupload the array should be populated with error message, this else shouldn't ever be invoked
+		//instead the UPLOAD_ERR_NO_FILE error flag will be set
+		$errors[] = 'You have not specified a file to be uploaded.'; 
 	}
 	
-	if($file['error'] > 0) {
-		$errors[] = get_upload_error($file['error']);
-	} else {
-				
-		if(!$uploadService->validateExtension($file['name'])){
-			$errors[] = 'Invalid extension for avatar. Accepted extensions are: '.implode(', ', $acceptedExtensions);
-		}
-
-		if(!$uploadService->validateUploadFilesize($file['size'])){
-			$errors[] = 'Your file is too large, the maximum max size is '.UPLOAD_MAX_FILESIZE_IN_MB. 'MB';
-		}
-	}
-
 	if(count($errors) == 0)
 	{
-		$info = pathinfo($file['name']);
+		$filename = $file['name'];		
+		$generatedName = $uploadService->generateUniqueName();
 
-		$originalFilename = $info['filename'].'.'.$extension;
-
-		$prefix = strtolower($info['filename']).'_';
-
-		$userId = $_SESSION[SESSION_USER_ID];
-
-		$uniqueFilename = IO::getUniqueFilename();
-
-		$uploadDir = IO::pathCombine('uploads', $userId);
+		$uploadDir = IO::pathCombine('uploads', $user->id);
 		
-		// if(!file_exists('uploads')){
-		// 	$created = mkdir('uploads', 0777, true);
-		// 	pre('created uploads '.$created);
-		// }
-
 		if(!file_exists($uploadDir)){
-			$created = mkdir($uploadDir, 0777, true);
-			//pre('created'.$uploadDir.' '.$created);
+			mkdir($uploadDir, 0777, true);
 		}
-
-		$path = IO::pathCombine($uploadDir, $uniqueFilename); 
-
-		while(file_exists($path)){
-			$uniqueFilename = IO::getUniqueFilename();
-			$path = IO::pathCombine($uploadDir, $uniqueFilename);
-		}
-
-		//name = filename
-		//tmp_name =  C:\Development\wamp\tmp\phpAB80.tmp
-		//size  
-
 		
-
-		/*
-		if(!create_upload_row($connection, $userId, $uniqueFilename, $description)){
-			$errors[] = 'not added to database';
+		$uploadPath = IO::pathCombine($uploadDir, $generatedName); 
+		
+		while(file_exists($uploadPath)){
+			$generatedName = $uploadService->generateUniqueName();
+			$uploadPath = IO::pathCombine($uploadDir, $generatedName);
 		}
-		*/
-
-
-
-		//add entry to the database to keep track of uploaded files
-		$description = mysqli_real_escape_string($connection, $description);
-
+		
+		//verify if mysqli_real_escape_string needs to be called in combination with prepared statements and sql parameters
+		$description = mysqli_real_escape_string($database, $description);
 		$filesize = filesize($file['tmp_name']);
 
-		if($uploadService->insert($userId, $originalFilename, $uniqueFilename, $filesize, $description)) {
-			//move the file to the destination
-			$source = $file['tmp_name'];
-			$destination = $path;
-
-			if(move_uploaded_file($source, $destination)) {
+		if($uploadService->insert($user->id, $filename, $generatedName, $filesize, $description)) {
+			if(move_uploaded_file($file['tmp_name'], $uploadPath)) {
 				$notifications[] = 'You have uploaded your file successfully.';
 			} else {
-				$errors[] = $originalFilename.' could not be moved into the upload directory of user '.$userId;// 'Moving file failed.';
+				$errors[] = 'Unable to write '.$filename.' to the file system.';
 			}
 		} else {
-			$errors[] = $originalFilename.' could not be added in the table by user '.$userId;
+			$errors[] = $filename.' could not be added to the database.';
 		}
 	}
 }
 
-mysqli_close($connection);
+$database->close();
 
 ?>
-<?php include_once 'includes/header.php'; ?>
+<?php require_once 'includes/header.php'; ?>
 <main>
-	<!-- <div class="jumbotron jumbotron-fluid jumbotron-code jumbotron-code-info" style="margin-bottom: 0">
-		<div class="container">	
-			<h1 class="display-4">New Upload</h1>
-			<p class="lead">Have you finished your homework?</p>
-		</div>
-	</div> -->
-
-	<?php if($authenticated): ?>
-	<div class="tab-container">
-		<div class="container">
-			<div class="tab-header clearfix">
-				<img src="<?=$user->avatar?>" alt="<?=$user->displayname?>'s Avatar" title="<?=$user->displayname?>'s Avatar" class="avatar float-left">
-				<div class="float-left ml-2">
-					<span class="d-block"><strong><?=$user->displayname?></strong></span>
-					<span class="d-block text-muted"><small><?=$user->email?></small></span>
-				</div>
-
-				<!-- <a class="btn btn-outline-info btn-sm float-right" href="/upload"><i class="fas fa-cloud-upload-alt mr-2"></i>New Upload</a> -->
-			</div>
-			<!-- <a class="btn btn-info btn-sm float-right" href="/upload"><i class="fas fa-cloud-upload-alt mr-2"></i>New Upload</a> -->
-			<ul class="nav nav-tabs">
-				<li class="nav-item">
-					<a class="nav-link " href="/">Your Uploads</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link active" href="/upload">New Upload</a>
-				</li>
-			</ul>
-		</div>
-	</div>
-	<?php endif; ?>
-
+	<?php require_once 'includes/tabheader.php'; ?>
 	<div class="container">	
-
 		<?php if(isset($notifications)&& count($notifications)>0): ?>
 		<div class="alert alert-success alert-dismissible fade show" role="alert">
 			<?=$notifications[0]?>
@@ -173,7 +126,7 @@ mysqli_close($connection);
 					<div class="custom-file">
 						<input type="file" class="custom-file-input" id="customFile" name="uploadInput">
 						<label id="customFileLabel" class="custom-file-label" for="customFile">Choose file</label>
-						<small id="uploadHint" class="form-text text-muted">Only zipped files under 20Mb with the *.zip extension are accepted.</small>
+						<small id="uploadHint" class="form-text text-muted">Only files under <?=UPLOAD_MAX_FILESIZE_IN_MB?> MB with the *.zip extension are accepted.</small>
 					</div>		
 				</div>						
 				<div class="form-group">

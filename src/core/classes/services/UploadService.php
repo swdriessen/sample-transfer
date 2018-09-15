@@ -82,6 +82,9 @@ class UploadService {
 	public function validateUploadFilesize($filesize){
 		return $filesize <= UPLOAD_MAX_FILESIZE;
 	}
+	public function generateUniqueName($extension = ''){
+		return IO::getUniqueFilename($extension);
+	}
 
 	//helper methods
 	private function getExpirationDate($expirationOffsetInSeconds = 604800){

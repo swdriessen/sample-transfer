@@ -11,8 +11,12 @@ class Utilities {
 	public static function dump_r($input){
 		echo '<pre>'.print_r($input).'</pre>';
 	}
-	public static function post($name){
-		return $_POST[$name] ?? null;
-	}
 
+	public static function post($name, $default = null){
+		return $_POST[$name] ?? $default;
+	}
+	public static function files($name, $default = null){
+		return $_FILES[$name] ?? $default;
+	}
+	
 }
