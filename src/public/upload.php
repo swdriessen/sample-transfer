@@ -29,9 +29,8 @@ if($authenticated && $isPost = isset($_POST['uploadSubmit']))
 	if($file['error'] > 0) {
 		$errors[] = get_upload_error($file['error']);
 	} else {
-		$acceptedExtensions = array('zip');//, 'rar', 'png', 'jpg', 'jepg');
-		$extension = pathinfo($file['name'], PATHINFO_EXTENSION);		
-		if(!in_array($extension, $acceptedExtensions)){
+				
+		if(!$uploadService->validateExtension($file['name'])){
 			$errors[] = 'Invalid extension for avatar. Accepted extensions are: '.implode(', ', $acceptedExtensions);
 		}
 

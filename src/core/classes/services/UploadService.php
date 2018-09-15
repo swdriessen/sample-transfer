@@ -72,6 +72,14 @@ class UploadService {
 		$this->_database->close();
 	}
 
+	//public helper methods
+	public function validateExtension($filename){
+		$acceptedExtensions = ['zip'];
+		$extension = pathinfo($filename, PATHINFO_EXTENSION);	
+
+		return in_array($extension, $acceptedExtensions);
+	}
+
 	//helper methods
 	private function getExpirationDate($expirationOffsetInSeconds = 604800){
 		return date('Y-m-d H:i:s', time() + $expirationOffsetInSeconds);
