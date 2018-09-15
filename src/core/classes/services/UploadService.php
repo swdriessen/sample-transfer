@@ -79,6 +79,9 @@ class UploadService {
 
 		return in_array($extension, $acceptedExtensions);
 	}
+	public function validateUploadFilesize($filesize){
+		return $filesize <= UPLOAD_MAX_FILESIZE;
+	}
 
 	//helper methods
 	private function getExpirationDate($expirationOffsetInSeconds = 604800){

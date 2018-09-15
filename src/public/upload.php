@@ -34,8 +34,8 @@ if($authenticated && $isPost = isset($_POST['uploadSubmit']))
 			$errors[] = 'Invalid extension for avatar. Accepted extensions are: '.implode(', ', $acceptedExtensions);
 		}
 
-		if($file['size'] > UPLOAD_MAX_FILESIZE){
-			$errors[] = 'Your file is too large, the maximum max size is '.UPLOAD_MAX_FILESIZE / (1024 * 1024). 'MB';
+		if(!$uploadService->validateUploadFilesize($file['size'])){
+			$errors[] = 'Your file is too large, the maximum max size is '.UPLOAD_MAX_FILESIZE_IN_MB. 'MB';
 		}
 	}
 
