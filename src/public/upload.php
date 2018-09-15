@@ -39,7 +39,8 @@ if(isset($_POST['uploadSubmit']))
 		else
 		{		
 			if(!$uploadService->validateExtension($file['name'])){
-				$errors[] = 'Invalid extension for avatar. Accepted extensions are: '.implode(', ', $acceptedExtensions);
+				//todo: create getAcceptedExtensions method
+				$errors[] = 'Invalid extension for the upload.';
 			}
 			
 			if(!$uploadService->validateUploadFilesize($file['size'])){
