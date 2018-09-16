@@ -5,18 +5,16 @@
 if(isset($_GET['code']) ){
 	$code = $_GET['code'];
 	
-	
-	$logger = new Logger(__DIR__.'/logs/logs.txt', 'callback.php');
-	$logger->log('initialize github callback with code: '.$code);
+	Logger::log('initialize github callback with code: '.$code, 'DEBUG');
 
 	$service = new GitHubAuthenticationService(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
 	$service->requestAccess($code);
 	
-	$jsonObject = $service->getUser(); //getUser($service->getAccessToken());
+	$jsonObject = $service->getUser();
 	
-	//$logger->log((string)json_encode($jsonObject));
+	//Logger::log((string)json_encode($jsonObject), 'DEBUG');
 
-	$repository = new UserRepository(create_connection());
+	$repository = new UserRepository($database);
 	
 	if(!$repository->existsGitHubUser($jsonObject->id))
 	{
@@ -29,35 +27,33 @@ if(isset($_GET['code']) ){
 		$user->profile = $jsonObject->html_url;
 		$user->active =  true;
 
-		$logger->log('creating new user: '.$jsonObject->name.' iden:'.$jsonObject->id);
+		Logger::log('creating new user: '.$jsonObject->name.' iden:'.$jsonObject->id);
 		if($newId = $repository->create($user))
 		{
 			$user->id = $newId;
-			$logger->log('returned id from new user is: '.$newId);
+			Logger::log('returned id from new user is: '.$newId);
 			setUserSessionDetails($user);
-			$logger->log('created user '.$user->displayname.' successfully');
+			Logger::log('created user '.$user->displayname.' successfully');
 			$_SESSION[SESSION_USER_AUTHENTICATED] = true;
 		} 
 		else 
 		{
-			$logger->log('unable to create user '.$user->displayname);
+			Logger::log('unable to create user '.$user->displayname);
 		}
 	} 
 	else 
 	{
 		$existingUser = $repository->fetchGitHubUser($jsonObject->id);
-
+		
 		//todo: update information if updated_at is recent or preferable compare to value in table, need to store more info or store the entire json object (the lazy way)
 		//$jsonObject->updated_at;
 
 		setUserSessionDetails($existingUser);
 		$_SESSION[SESSION_USER_AUTHENTICATED] = true;
-		$logger->log('authenticated user: '.$existingUser->displayname." ($existingUser->id)");
+		Logger::log('authenticated user: '.$existingUser->displayname." ($existingUser->id)");
 	}
 	
 	$repository->close();
 }
-
-
 
 redirect('/');

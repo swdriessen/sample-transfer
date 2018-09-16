@@ -4,9 +4,10 @@
 require_once 'autoload.php';
 require_once 'configuration.php';
 
-//initialize file logger
-$logger = new Logger(__DIR__.'/logs/log.txt');
-$logger->log('running in '.ENVIRONMENT.' environment');
+//initialize logger
+Logger::registerLogger(new FileLogger(__DIR__.'/logs/log.txt'));
+Logger::log('running in '.ENVIRONMENT.' environment', 'INFO');
+
 //start session
 session_start();
 

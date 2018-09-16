@@ -5,6 +5,6 @@ if(IN_DEVELOPMENT_MODE) {
 	authenticateDevelopmentUser();
 	redirect('/');
 }
-$logger->log('redirecting to github authenticate');
+Logger::log('redirecting to github authenticate');
 //send user to the github authenticate url
 redirect(GitHubAuthenticationService::GetAuthorizeUrl());

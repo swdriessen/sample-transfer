@@ -1,30 +1,22 @@
 <?php
 
-class Logger {
-	private $_path;
-	private $_fs;
-	
-	public function __construct($path, $caller = ''){
-		$this->_path = $path;
-
-		$dir = dirname($this->_path);
-		if(!file_exists($dir)){
-			mkdir($dir, 0777, true);
-		}
-
-		$this->_fs = fopen($this->_path, 'a');
-		
-		$this->log('========== NEW SESSION ==========');
-		if($caller != '') {
-			$this->log('initialized by '.$caller);
-		}
-	}
+final class Logger {
+	private static $_loggers = [];
 
 	public function __destruct(){
-		fclose($this->_fs);
+		foreach(self::$_loggers as $logger){
+			$logger->__destruct();
+		}
+	}
+	
+	public static function registerLogger(LoggerInterface $logger){
+		self::$_loggers[] = $logger;
 	}
 
-	public function log($entry){
-		fwrite($this->_fs, date("Y/m/d H:m:s", time())."\t".$entry.PHP_EOL);
+	//todo: create log level constants
+	public static function log($log, $level = ''){
+		foreach(self::$_loggers as $logger){
+			$logger->log($log, $level);
+		}
 	}
 }
