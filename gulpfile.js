@@ -3,7 +3,7 @@ var sass = require('gulp-sass');
 
 gulp.task('sass', function(){
 	return gulp.src(['sass/bootstrap.scss', 'sass/site.scss'])
-	.pipe(sass())
+	.pipe(sass({outputStyle: 'compressed'}))
 	.pipe(gulp.dest('src/public/css'))
 });
 
@@ -13,7 +13,7 @@ gulp.task('js', function(){
 });
 
 gulp.task('observe', function(){
-	gulp.watch(['sass/*.scss'], ['sass']);
+	gulp.watch(['sass/**/*.scss'], ['sass']);
 });
 
 gulp.task('default', ['js', 'observe']);
