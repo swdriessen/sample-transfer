@@ -81,7 +81,7 @@ if($authenticated = isAuthenticated())
 					<?php else: ?>
 					<!-- <p class="lead mt-4">Your download is ready.</p> -->
 
-					<button class="btn btn-success rounded my-4" onclick="serveFile('<?=$file?>')"><?=$download->filename?> (<?=$download->getDisplayFileSize()?>)</button>
+					<button class="btn btn-success rounded my-4" onclick="serveFile('<?=$file?>')"><?=$download->filename?> (<?=$download->getDisplayFilesize()?>)</button>
 					<p><span class="d-block"><?=$download->description?></span>
 					<small style="opacity: 0.5">This file is available until <?=$displayDate?></small>
 				</p>

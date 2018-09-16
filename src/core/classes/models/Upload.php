@@ -12,34 +12,51 @@ class Upload
 	public $expirationDate;
 	public $downloads;
 	
-	//todo: proper implementation
-
-	// public function __construct($userId, $filename, $description = ''){
-	// 	$this->userId = $userId;
-	// 	$this->filename = $filename;
-	// 	$this->description = $description;		
-	// 	$this->uploadDate = date('Y-m-d H:i:s', time());
-	// 	$this->expirationDate = date('Y-m-d H:i:s', time() + 60 * 60 * 24 * 14);		
-	// }
 	public function __construct(){
-
+		$this->id = 0;
+		$this->userId = 0;
+		$this->filename = '';
+		$this->localfilename = '';
+		$this->filesize = 0;
+		$this->description = '';
+		$this->uploadDate = date('Y-m-d H:i:s', time());
+		$this->expirationDate = date('Y-m-d H:i:s', time() + 60 * 60 * 24 * 7);
+		$this->downloads = 0;
 	}
+	
+	public static function constructFromDatabase($id, $userId, $filename, $localFilename, $filesize, $description, $uploadDate, $expirationDate, $downloads){
+		$instance = new self();
+		
+		$instance->id = $id;
+		$instance->userId = $userId;
+		$instance->filename = $filename;
+		$instance->localfilename = $localFilename;
+		$instance->filesize = $filesize;
+		$instance->description = $description;
+		$instance->uploadDate = $uploadDate;
+		$instance->expirationDate = $expirationDate;
+		$instance->downloads = $downloads;
 
-
-	public function getDisplayFileSize(){
-
+		return $instance;
+	}
+	
+	public function getDisplayFilesize(){
 		$value = $this->filesize;
-		$type = 'b';
-		if($value>1024){
-			$value = $value/1024;
-			$type = 'KB';
-		}
-		if($value>1024){
-			$value = $value/1024;
+		$type = 'B';
+		
+		if($value > 1024) {
+			$value /= 1024;
+			$type = 'kB';
+		}		
+		if($value > 1024) {
+			$value /= 1024;
 			$type = 'MB';
 		}
-		
+
 		return round($value, 2).' '.$type;
 	}
 
+	public function __toString(){
+		return $this->filename;
+	}
 }

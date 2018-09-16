@@ -87,7 +87,7 @@ if($authenticated = isAuthenticated())
 							</div>
 						</div>
 						<span class="d-block"><?=$upload->description?></span>
-						<span class="d-block"><?=$upload->getDisplayFileSize()?></span>
+						<span class="d-block"><?=$upload->getDisplayFilesize()?></span>
 						<span class="d-block"><strong>Downloads:</strong> <?=$upload->downloads?></span>
 					</div>
 				</div>
