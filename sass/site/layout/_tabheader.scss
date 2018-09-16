@@ -1,0 +1,37 @@
+$tab-container-background: #FAFBFC;
+$tab-container-border: #dee2e6;
+
+.tab-container {	
+	background: $tab-container-background;
+	border-bottom: 1px solid $tab-container-border;
+	margin-bottom: 40px;
+	.container{ 
+		.tab-header {
+			padding: 20px 0;
+		}
+	}
+	.nav-tabs {
+		font-size: 0.9rem;
+		border-bottom: 0px;
+		.nav-link.active {
+			font-weight: 400;
+		}
+		.nav-link:not(.active):hover {
+			border-color: transparent !important;
+		}
+		.nav-link:not(.active):active {
+			border-color: transparent !important;
+		}
+	}
+}
+
+.avatar {
+	width: 50px;
+	height: 50px;
+}
+
+.profile-avatar {
+	border-radius: 5%;
+	max-height: 150px;
+	max-width: 150px;
+}

@@ -1,0 +1,35 @@
+/* jumbotron */
+.jumbotron-code{
+	background: url('../images/simple-codelines.svg') center center no-repeat, lighten($theme, 5%);
+	color: #e7e7e7;
+	background-size: cover;
+	text-align: center
+}
+.jumbotron .avatar {
+	height: 125px;
+	width: 125px;
+	border-radius: 10%;
+	margin-bottom: 1rem;
+}
+
+.jumbotron-code-online{
+	background: url('../images/simple-codelines.svg') center center no-repeat, $green;
+	background-size: cover;
+}
+.jumbotron-code-red{
+	background: url('../images/simple-codelines.svg') center center no-repeat, $danger;
+	background-size: cover;
+}
+.jumbotron-code-info{
+	background: url('../images/simple-codelines.svg') center center no-repeat, $info;
+	background-size: cover;
+}
+.jumbotron-code-download{
+	background: url('../images/simple-codelines.svg') center center no-repeat, #144731;
+	background-size: cover;
+}
+
+.background-download{
+	background: url('/images/simple-codelines.svg') center center no-repeat, unquote('#00000099');
+	background-size: cover;
+}
