@@ -15,6 +15,9 @@ class Utilities {
 	public static function post($name, $default = null){
 		return $_POST[$name] ?? $default;
 	}
+	public static function get($name, $default = null){
+		return $_GET[$name] ?? $default;
+	}
 	public static function files($name, $default = null){
 		return $_FILES[$name] ?? $default;
 	}

@@ -8,7 +8,7 @@ spl_autoload_register(function($class){
 		'classes/models/',
 		'classes/services/',
 		'classes/utilities/',
-		'interfaces/',
+		'classes/interfaces/',
 	];
 	
 	foreach($directories as $dir){

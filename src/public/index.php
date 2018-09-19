@@ -19,42 +19,24 @@ if($authenticated = isAuthenticated())
 <?php include_once 'includes/header.php'; ?>
 <main class="">
 	<?php if(!$authenticated): ?>
-	<div class="jumbotron jumbotron-fluid jumbotron-code" style="margin-bottom: 0">
-		<div class="container">				
-			
+	<div class="jumbotron jumbotron-fluid jumbotron-code" style="margin-bottom: 0; position: relative">
+		<div class="container">
 			<h1 class="display-4"><?=PROJECT_NAME?></h1>
 			<p class="lead">The most secure way to transfer your homework files.</p>
-			<a class="btn btn-github rounded mt-4" href="/auth"><i class="fab fa-github mr-2" style="font-size: 1rem;"></i>Sign in with GitHub</a>
-			<!-- <img src="<?=$user->avatar?>" alt="<?=$user->displayname?>'s Avatar" title="<?=$user->displayname?>'s Avatar" class="d-inline-block d-sm-none avatar">			
-			<h1><?=$user->displayname?></h1>
-			<p class="lead">Have you finished your homework?</p>
-			<a class="btn btn-outline-info rounded mt-4" href="/upload"><i class="fas fa-cloud-upload-alt mr-2"></i>New Upload</a> -->
+			<a class="btn btn-github rounded mt-4" href="/auth/github"><i class="fab fa-github mr-2" style="font-size: 1rem;"></i>Sign in with GitHub</a>
+		</div>
+		<div class="hero-overlay-divider">
+			<svg class="hero-overlay-divider-shape" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
+				<path d="M 0 14 s 88.64 3.48 300 36 c 260 40 514 27 703 -10 l 12 28 l 3 36 h -1018 z"></path>
+				<path d="M 0 45 s 271 45.13 500 32 c 157 -9 330 -47 515 -63 v 86 h -1015 z"></path>
+				<path d="M 0 58 s 188.29 32 508 32 c 290 0 494 -35 494 -35 v 45 h -1002 z"></path>
+			</svg>
 		</div>
 	</div>
 	<?php endif; ?>	
-
+	
 	<?php if($authenticated): ?>
-	<div class="tab-container">
-		<div class="container">
-			<div class="tab-header clearfix">
-				<img src="<?=$user->avatar?>" alt="<?=$user->displayname?>'s Avatar" title="<?=$user->displayname?>'s Avatar" class="avatar float-left" style="border-radius:5%">
-				<div class="float-left ml-2">
-					<span class="d-block"><strong><?=$user->displayname?></strong></span>
-					<span class="d-block text-muted"><small><?=$user->email?></small></span>
-				</div>
-				<!-- <a class="btn btn-outline-info btn-sm float-right" href="/upload"><i class="fas fa-cloud-upload-alt mr-2"></i>New Upload</a> -->
-			</div>
-			<!-- <a class="btn btn-info btn-sm float-right" href="/upload"><i class="fas fa-cloud-upload-alt mr-2"></i>New Upload</a> -->
-			<ul class="nav nav-tabs">
-				<li class="nav-item">
-					<a class="nav-link active" href="/">Your Uploads</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="/upload">New Upload</a>
-				</li>
-			</ul>
-		</div>
-	</div>
+	<?php require_once 'includes/tabheader.php'; ?>
 	<?php endif; ?>
 
 	<div class="container">		
@@ -134,21 +116,3 @@ if($authenticated = isAuthenticated())
 	</div>
 </main>
 <?php include_once 'includes/footer.php'; ?>
-<!-- <script>
-	$(document).ready(function(){
-		let date = new Date();
-		let hours = date.getHours();
-
-		let message = 'Welcome';
-		
-		if(hours >= 0 && hours < 12){
-			message = 'Good Morning';
-		} else if(hours >= 12 && hours < 18) {
-			message = 'Good Afternoon';
-		}else if(hours >= 18 && hours < 24) {
-			message = 'Good Evening';
-		}
-		
-		$('#welcomeMessage').text(message);
-	});
-</script> -->

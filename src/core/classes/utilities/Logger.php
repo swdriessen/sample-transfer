@@ -14,9 +14,21 @@ final class Logger {
 	}
 
 	//todo: create log level constants
-	public static function log($log, $level = ''){
+	private static function log($log, $level = ''){
 		foreach(self::$_loggers as $logger){
 			$logger->log($log, $level);
 		}
+	}
+	
+	public static function debug($log){
+		self::log($log, 'debug');
+	}
+
+	public static function info($log){
+		self::log($log, 'info');
+	}
+
+	public static function warning($log){
+		self::log($log, 'warning');
 	}
 }

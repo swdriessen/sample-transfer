@@ -22,7 +22,7 @@ final class GitHubAuthenticationService {
 		return $this->_accessToken;
 	}
 
-	public static function Callback($code){
+	public static function Callback($code) {
 		$service = new GitHubAuthenticationService(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
 		$service->requestAccess($code);
 		return $service;
@@ -89,6 +89,8 @@ final class GitHubAuthenticationService {
 		return stream_context_create($options);
 	}
 
+
+	//move to a new api service, passing in the access token
 	public function getUser(){
 		$url = 'https://api.github.com/user?'.$this->getAccessTokenQuery();
 		$json = file_get_contents($url, false, $this->getStreamContext());
@@ -103,7 +105,4 @@ final class GitHubAuthenticationService {
 		
 		return $jsonObject[0]->email;
 	}
-
-
-
 }

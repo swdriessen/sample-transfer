@@ -1,7 +1,11 @@
 <?php
 
-class UserRepository extends Repository
-{
+class UserRepository extends Repository {
+
+
+
+
+
 	public function create($user)
 	{		
 		$active = $user->active ? 1 : 0;
@@ -20,23 +24,10 @@ class UserRepository extends Repository
 		$result = $this->query($query);
 		$userRows = $this->fetch($result);
 		//Utilities::dump($query);
-		$users = [];
-		
+		$users = [];		
 		foreach($userRows as $row){
-
-			$user = new User();
-			$user->id = $row['id'];
-			$user->identifier = $row['identifier'];
-			$user->username = $row['username'];
-			$user->displayname = $row['displayname'];
-			$user->email = $row['email'];
-			$user->avatar = $row['avatar'];
-			$user->profile = $row['profile'];
-			$user->active =  $row['active'];
-
-			$users[] = $user;
-		}
-		
+			$users[] = $this->constructUser($row);
+		}		
 		return $users[0] ?? null;
 	}
 	function fetchGitHubUser($identifier){
@@ -46,50 +37,46 @@ class UserRepository extends Repository
 		
 		$users = [];
 		foreach($userRows as $row){
-			$user = new User();
-
-			$user->id = $row['id'];
-			$user->identifier = $row['identifier'];
-			$user->username = $row['username'];
-			$user->displayname = $row['displayname'];
-			$user->email = $row['email'];
-			$user->avatar = $row['avatar'];
-			$user->profile = $row['profile'];
-			$user->active =  $row['active'];
-
-			$users[] = $user;
-		}
-		
-		if(count($users)==1){
-			return $users[0];
-		}
-		return null;
+			$users[] = $this->constructUser($row);
+		}		
+		return $users[0] ?? null;
 	}
 	function existsGitHubUser($identifier){
-		return $this->fetchGitHubUser($identifier) !=  null;
+		return $this->fetchGitHubUser($identifier) != null;
 	}
 	function fetchUsers(){
 		$query = "SELECT * FROM users;";
 		$result = $this->query($query);
 		$userRows = $this->fetch($result);
 		
-		$users = [];
-		
+		$users = [];		
 		foreach($userRows as $row){
-
-			$user = new User();
-			$user->id = $row['id'];
-			$user->identifier = $row['identifier'];
-			$user->username = $row['username'];
-			$user->displayname = $row['displayname'];
-			$user->email = $row['email'];
-			$user->avatar = $row['avatar'];
-			$user->profile = $row['profile'];
-			$user->active =  $row['active'];
-
-			$users[] = $user;
+			$users[] = $this->constructUser($row);
 		}
-
 		return $users;
 	}	
+
+
+
+
+
+
+
+
+
+
+
+
+	private function constructUser($row){
+		return User::constructFromDatabase(
+			$row['id'],
+			$row['identifier'],
+			$row['username'],
+			$row['displayname'],
+			$row['email'],
+			$row['avatar'],
+			$row['profile'],
+			$row['active']
+		);
+	}
 }

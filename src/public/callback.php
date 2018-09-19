@@ -5,14 +5,14 @@
 if(isset($_GET['code']) ){
 	$code = $_GET['code'];
 	
-	Logger::log('initialize github callback with code: '.$code, 'DEBUG');
+	Logger::debug('initialize github callback with code: '.$code);
 
 	$service = new GitHubAuthenticationService(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
 	$service->requestAccess($code);
 	
 	$jsonObject = $service->getUser();
 	
-	//Logger::log((string)json_encode($jsonObject), 'DEBUG');
+	//Logger::debug((string)json_encode($jsonObject));
 
 	$repository = new UserRepository($database);
 	
@@ -26,19 +26,17 @@ if(isset($_GET['code']) ){
 		$user->avatar = $jsonObject->avatar_url;
 		$user->profile = $jsonObject->html_url;
 		$user->active =  true;
-
-		Logger::log('creating new user: '.$jsonObject->name.' iden:'.$jsonObject->id);
+		
+		Logger::info('creating new user: '.$jsonObject->name.' iden:'.$jsonObject->id);
 		if($newId = $repository->create($user))
 		{
 			$user->id = $newId;
-			Logger::log('returned id from new user is: '.$newId);
 			setUserSessionDetails($user);
-			Logger::log('created user '.$user->displayname.' successfully');
 			$_SESSION[SESSION_USER_AUTHENTICATED] = true;
 		} 
 		else 
 		{
-			Logger::log('unable to create user '.$user->displayname);
+			Logger::warning('unable to create user '.$user->displayname);
 		}
 	} 
 	else 
@@ -50,7 +48,7 @@ if(isset($_GET['code']) ){
 
 		setUserSessionDetails($existingUser);
 		$_SESSION[SESSION_USER_AUTHENTICATED] = true;
-		Logger::log('authenticated user: '.$existingUser->displayname." ($existingUser->id)");
+		Logger::info('authenticated user: '.$existingUser->displayname." ($existingUser->id)");
 	}
 	
 	$repository->close();

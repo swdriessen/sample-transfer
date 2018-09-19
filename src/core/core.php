@@ -6,7 +6,7 @@ require_once 'configuration.php';
 
 //initialize logger
 Logger::registerLogger(new FileLogger(__DIR__.'/logs/log.txt'));
-Logger::log('running in '.ENVIRONMENT.' environment', 'INFO');
+Logger::info(PROJECT_NAME.' running in '.ENVIRONMENT.' environment');
 
 //start session
 session_start();
@@ -44,6 +44,8 @@ function isAuthenticated(){
 function signOut(){
 	unset($_SESSION[SESSION_USER_AUTHENTICATED]);
 	session_destroy();
+	
+	Logger::info('signed off user: '.$_SESSION[SESSION_USER_ID]);
 }
 
 function redirect($location = '/'){
