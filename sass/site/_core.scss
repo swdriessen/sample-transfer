@@ -6,7 +6,8 @@ html {
 body {
 	// font-family: 'Ubuntu';
 	font-family: 'Nunito', sans-serif;
-	color: #151516;
+	background-color: $page-background;
+	color: $page-color;
 	position: relative;
 	padding-bottom: 50px;
 	min-height: 100%;
